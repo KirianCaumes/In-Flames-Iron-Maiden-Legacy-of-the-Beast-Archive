@@ -1,0 +1,187 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jesterhead Archive</title>
+<meta name="description" content="Jesterhead, the In Flames mascot, in Iron Maiden: Legacy of the Beast (“In The Dark” event, July 2023): model, animations, effects, sounds, battle arenas and story, recovered after the game shut down.">
+<link rel="canonical" href="%SITE_URL%">
+<!-- link previews (Discord, Slack, social networks): absolute URLs, SITE_URL in tools/build_site.py -->
+<meta name="theme-color" content="#d4202c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jesterhead Archive">
+<meta property="og:title" content="Jesterhead in Iron Maiden: Legacy of the Beast">
+<meta property="og:description" content="The In Flames mascot from the “In The Dark” event (July 2023), rebuilt from game data after the shutdown: 3D viewer with his animations, effects and sounds, the battle arenas, the enemies and the story.">
+<meta property="og:url" content="%SITE_URL%">
+<meta property="og:image" content="%SITE_URL%assets/social-preview.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jesterhead, a hooded figure with a clock for a face, in the 3D viewer">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/library/thumbs/hud_icon_Jesterhead.jpg">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/model/jesterhead.glb" as="fetch" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<link rel="modulepreload" href="vendor/three/three.module.min.js">
+<link rel="modulepreload" href="vendor/three/addons/loaders/GLTFLoader.js">
+<link rel="modulepreload" href="vendor/three/addons/utils/BufferGeometryUtils.js">
+<link rel="modulepreload" href="vendor/three/addons/controls/OrbitControls.js">
+<link rel="modulepreload" href="vendor/three/addons/utils/SkeletonUtils.js">
+<link rel="modulepreload" href="js/main.js">
+<link rel="modulepreload" href="js/jester.js">
+<link rel="modulepreload" href="js/character.js">
+<link rel="modulepreload" href="js/particles.js">
+<link rel="modulepreload" href="js/chains.js">
+<link rel="modulepreload" href="js/curves.js">
+<link rel="modulepreload" href="js/arena.js">
+<link rel="modulepreload" href="js/npc.js">
+<link rel="modulepreload" href="js/audio.js">
+<script type="application/json" id="file-sizes"><!--SIZES--></script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="bar">
+    <div class="brand">
+      <img class="logo" src="assets/library/graphic_IM_legacy_logo.webp" alt="Iron Maiden: Legacy of the Beast" width="136" height="34">
+      <span class="sep" aria-hidden="true"></span>
+      <div class="title">
+        <h1>Jesterhead</h1>
+        <p class="kicker">The In Flames mascot &middot; In The Dark event, July 2023</p>
+      </div>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#jesterhead">Character</a><a href="#in-the-dark">In The Dark</a><a href="#notes">Notes</a><a href="#library">Library</a><a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="viewer" class="viewer" aria-label="3D viewer">
+  <div class="stage">
+    <div id="lightfx" aria-hidden="true"></div>
+    <canvas id="c"></canvas>
+    <p id="status" class="status">Loading model…</p>
+    <p class="hint">Drag to orbit &middot; wheel to zoom &middot; right-drag to pan &middot; F for full screen</p>
+    <button id="fullscreen" class="fs" type="button" aria-pressed="false">Full screen</button>
+    <div class="transport">
+      <button id="play" type="button">Pause</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Timeline">
+      <span class="time" id="time">0.00 / 0.00 s</span>
+    </div>
+  </div>
+  <aside class="panel">
+    <h2 class="label">Animations</h2>
+    <div class="anims" id="anims"></div>
+    <p class="note" id="travel" hidden>This animation moves the character several metres (he walks in or out of the battlefield).
+      &ldquo;Keep centred&rdquo; follows him; untick it to see the real displacement.</p>
+    <h2 class="label">Scene</h2>
+    <label class="opt"><span>Battle</span>
+      <select id="battle"><!--BATTLES--></select></label>
+    <label class="opt"><span>Time period</span>
+      <select id="period"><option value="past">Past</option><option value="present" selected>Present</option><option value="future">Future</option></select></label>
+    <div class="opt"><span>Jesterhead at</span><span class="slots" role="group" aria-label="Jesterhead positions">
+      <label title="ForwardSlot"><input type="checkbox" name="slot" value="ForwardSlot" checked>1</label>
+      <label title="LeftSlot"><input type="checkbox" name="slot" value="LeftSlot">2</label>
+      <label title="RightSlot"><input type="checkbox" name="slot" value="RightSlot">3</label></span></div>
+    <label class="opt"><span>Enemies</span><input id="enemies" type="checkbox"></label>
+    <label class="opt"><span>Battle camera</span><input id="battlecam" type="checkbox"></label>
+    <p class="note" id="arena-status" hidden></p>
+    <h2 class="label">Sound</h2>
+    <label class="opt"><span>Volume</span><input id="volume" type="range" min="0" max="100" step="1" value="5"><output id="volumev">5 %</output></label>
+    <label class="opt"><span>Sound effects</span><input id="sfx" type="checkbox" checked></label>
+    <h2 class="label">Display</h2>
+    <label class="opt"><span>Speed</span><input id="speed" type="range" min="0.1" max="2" step="0.05" value="1"><output id="speedv">1.00×</output></label>
+    <label class="opt"><span>Loop</span><input id="loop" type="checkbox" checked></label>
+    <label class="opt"><span>Particle effects</span><input id="fx" type="checkbox" checked></label>
+    <label class="opt"><span>Watch-chain physics</span><input id="physics" type="checkbox" checked></label>
+    <label class="opt"><span>Ghost faces</span><input id="faces" type="checkbox" checked></label>
+    <label class="opt"><span>Keep centred (enter / leave / revive)</span><input id="inplace" type="checkbox" checked></label>
+    <label class="opt"><span>Controls legend</span><input id="legend" type="checkbox" checked></label>
+    <label class="opt"><span>Auto-rotate</span><input id="spin" type="checkbox"></label>
+    <label class="opt"><span>Wireframe</span><input id="wire" type="checkbox"></label>
+    <button id="reset" type="button" class="wide">Reset camera</button>
+  </aside>
+</section>
+
+<!--CHARACTER-->
+
+<!--EVENT-->
+
+<section id="notes" class="wrap doc">
+  <h2>Notes</h2>
+  <div class="cols">
+    <div>
+      <h3>How it was rebuilt</h3>
+      <p>The game (Roadhouse Interactive, then Nodding Frog) closed on 31&nbsp;December&nbsp;2024 and its content servers went
+        offline with it. Everything here comes from the download cache of a phone where the game was still installed
+        (193 Unity asset bundles, 3.5&nbsp;GB) and from the game&rsquo;s application package.</p>
+      <ol class="steps">
+        <li>Model, skeleton and the 11 animation clips were read from the bundles and assembled into a skinned glTF file.</li>
+        <li>The game&rsquo;s shaders were exported as compiled GLSL and ported as they are, for the character, the particles and
+          the arenas (baked vertex lighting and distance fog ramps).</li>
+        <li>Which effect, sound or camera plays when comes from the game&rsquo;s scripts, recovered from the IL2CPP binary and read
+          instruction by instruction, and from the character, ability and quest data.</li>
+        <li>Names, descriptions and dialogue come from the game&rsquo;s own data tables and English text.</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Fidelity</h3>
+      <table class="fidelity">
+        <thead><tr><th scope="col">Part</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr><td>Mesh, textures, animations</td><td><span class="s ok">Exact</span> Extracted data (curves resampled at 30&nbsp;fps). The viewer loads lighter copies (WebP textures, redundant keyframes removed); the full-quality files are in the repository.</td></tr>
+          <tr><td>Character and arena shading</td><td><span class="s ok">Ported</span> Same formulas as the game shaders.</td></tr>
+          <tr><td>Arena layout, lighting, time periods</td><td><span class="s ok">Exact</span> Scene data, baked colours and fog ramps.</td></tr>
+          <tr><td>Effect and sound timing, battle camera</td><td><span class="s ok">Ported</span> Logic read from the game scripts and data, including the camera moves of Take This Life (battle camera on).</td></tr>
+          <tr><td>Particle effects</td><td><span class="s approx">Re-simulated</span> Same parameters; Unity&rsquo;s engine code is not public, so motion is close but not frame-identical.</td></tr>
+          <tr><td>Watch chains</td><td><span class="s approx">Approximated</span> PhysX joints replaced by a rope simulation with the same lengths.</td></tr>
+          <tr><td>Sound mix</td><td><span class="s approx">Approximated</span> Clips and volumes are the game&rsquo;s; the mixer settings are not reproduced.</td></tr>
+          <tr><td>Enemy line-ups</td><td><span class="s approx">From footage</span> Sent by the game servers, not in the cached data; read from a recording of the Normal run. Idle animation only.</td></tr>
+        </tbody>
+      </table>
+      <p class="small">Details, with the addresses of the game functions involved: <code>docs/technical-notes.md</code> in the repository.</p>
+    </div>
+  </div>
+</section>
+
+<section id="library" class="wrap doc">
+  <h2>Asset library</h2>
+  <p class="lead">Files as extracted from the game data. Character textures keep their alpha channel: there it is the emission mask,
+    not transparency.</p>
+  <!--LIBRARY-->
+</section>
+
+<section id="about" class="wrap doc">
+  <h2>About this archive</h2>
+  <div class="cols">
+    <div>
+      <p>An unofficial, non-commercial preservation archive. Source code, extraction scripts and technical notes:
+        <a href="https://github.com/KirianCaumes/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive" rel="noopener" target="_blank">github.com/KirianCaumes/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive</a>.</p>
+      <p>The extraction, the reconstruction and this site were generated by Claude (Anthropic), working in Claude Code.</p>
+      <h3>Tools</h3>
+      <ul class="plain">
+        <li><a href="https://github.com/K0lb3/UnityPy" rel="noopener" target="_blank">UnityPy</a> and <a href="https://github.com/AssetRipper/AssetRipper" rel="noopener" target="_blank">AssetRipper</a> to read the bundles</li>
+        <li><a href="https://github.com/Perfare/Il2CppDumper" rel="noopener" target="_blank">Il2CppDumper</a> and <a href="https://www.capstone-engine.org" rel="noopener" target="_blank">Capstone</a> to read the game code</li>
+        <li><a href="https://threejs.org" rel="noopener" target="_blank">three.js</a> r170 for rendering (bundled, MIT) &middot; IBM Plex fonts (bundled, OFL)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Rights</h3>
+      <p class="small">Jesterhead is the mascot of In Flames. Iron Maiden, Eddie and <i>Legacy of the Beast</i> belong to their
+        respective owners; the game was developed by Roadhouse Interactive and Nodding Frog. Assets are reproduced for documentation only and
+        remain the property of their owners. The game&rsquo;s Iron Maiden music is not included.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap footer">
+  <p>Unofficial archive &middot; rebuilt in October 2026 from game data recovered after the shutdown.</p>
+</footer>
+</body>
+</html>

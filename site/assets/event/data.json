@@ -1,0 +1,574 @@
+{
+ "character": {
+  "name": "Jesterhead",
+  "role": "Negative Effect Caster",
+  "class": "Sentinel",
+  "ids": [
+   30005631,
+   30005632,
+   30005633,
+   30005634,
+   30005635
+  ],
+  "ranks": [
+   {
+    "rank": "I",
+    "stars": 1,
+    "partyCost": 4,
+    "hp": 150,
+    "atk": 100,
+    "def": 50,
+    "ap": 100,
+    "mr": 50,
+    "sp": 50,
+    "growth": {
+     "hp": 60,
+     "atk": 3,
+     "def": 1,
+     "ap": 4,
+     "mr": 2,
+     "sp": 1
+    }
+   },
+   {
+    "rank": "II",
+    "stars": 2,
+    "partyCost": 7,
+    "hp": 1032,
+    "atk": 126,
+    "def": 55,
+    "ap": 141,
+    "mr": 70,
+    "sp": 55,
+    "growth": {
+     "hp": 65,
+     "atk": 4,
+     "def": 2,
+     "ap": 5,
+     "mr": 2,
+     "sp": 2
+    }
+   },
+   {
+    "rank": "III",
+    "stars": 3,
+    "partyCost": 10,
+    "hp": 2854,
+    "atk": 225,
+    "def": 107,
+    "ap": 269,
+    "mr": 119,
+    "sp": 107,
+    "growth": {
+     "hp": 70,
+     "atk": 5,
+     "def": 2,
+     "ap": 6,
+     "mr": 2,
+     "sp": 2
+    }
+   },
+   {
+    "rank": "IV",
+    "stars": 4,
+    "partyCost": 13,
+    "hp": 5587,
+    "atk": 416,
+    "def": 180,
+    "ap": 498,
+    "mr": 189,
+    "sp": 180,
+    "growth": {
+     "hp": 80,
+     "atk": 6,
+     "def": 3,
+     "ap": 9,
+     "mr": 4,
+     "sp": 2
+    }
+   },
+   {
+    "rank": "V",
+    "stars": 5,
+    "partyCost": 16,
+    "hp": 9526,
+    "atk": 712,
+    "def": 333,
+    "ap": 967,
+    "mr": 404,
+    "sp": 270,
+    "growth": {
+     "hp": 90,
+     "atk": 8,
+     "def": 4,
+     "ap": 11,
+     "mr": 6,
+     "sp": 4
+    }
+   }
+  ]
+ },
+ "abilities": [
+  {
+   "kind": "Basic",
+   "id": 10002143,
+   "name": "Only For The Weak",
+   "description": "• Deal one hit of magic and true damage to all enemies.\\n• 50% Chance to [E267D2]Critically Strike[-].\\n• If any enemy is suffering from [E267D2]Bleed effects[-], including Silver and Innate effects, inflict [E267D2]Perfect Crave[-] for 2 turns on a random enemy.\\n• Grant a random [E267D2]Shield Effect[-] for 3 turns to each ally.\\n• Revive a random ally with full [E267D2]HP[-].",
+   "icon": "ABicon_732B_OnlyForTheWeak",
+   "energy": 0,
+   "maxLevel": 5
+  },
+  {
+   "kind": "Energy",
+   "id": 10002149,
+   "name": "Take This Life",
+   "description": "• Deal 2 hits of magic damage to all enemies.\\n• [E267D2]Steal Beneficial Effects, including Golden Effects[-], from all enemies.\\n• If any enemy is suffering from [E267D2]Perfect Crave[-], inflict [E267D2]Perfect Death[-] for 2 turns on a random enemy.\\n• Revive up to 2 dead allies up to [E267D2]Max HP[-].\\n• Inflict [E267D2]Bleed[-] for 2 turns on all enemies.\\n• [E267D2]Permanently increase HP[-] of all allies excluding self by +50%. ",
+   "icon": "ABicon_732E_TakeThisLife",
+   "energy": 6,
+   "maxLevel": 5
+  },
+  {
+   "kind": "Passive",
+   "id": 20008859,
+   "name": "Crawl Through Knives",
+   "description": "Immune to Permadeath Effects, Ghost, Dark Ghost and Doom. Remove Crave, Heal Block, and Heal Reduction effects, including silver effects, from all allies at the start of battle and at the start of your turn. Grant a random Shield Effect for 2 turns to all allies at the start of the battle. When you die for the first time, instantly kill another random enemy. When health drops below 50%, gain Cleanse, Immunity to all Negative Effects, including silver effects, and Passive Disable Effects for 2 turns.",
+   "icon": "ABicon_732P_CrawlThroughKnives",
+   "energy": null,
+   "maxLevel": 0
+  }
+ ],
+ "event": {
+  "name": "In The Dark",
+  "dungeon": "In The Dark",
+  "mapModel": "Jesterhead_spacemap_World",
+  "mapMusic": "bc_amb_mapHub_fe_stage1",
+  "currency": {
+   "name": "Enchanted Sigils",
+   "description": "Earned from the In The Dark Dungeon. Spend currency in Events tab in store.",
+   "icon": "loot_Currency_MegaE",
+   "internal": "DC_2023_July_Dungeon_A"
+  },
+  "calendar": {
+   "title": "JESTERHEAD CALENDAR",
+   "description": "Log in a total of 7 days to receive Jesterhead on the final day. Ends August 11th, 5PM PT."
+  },
+  "quests": [
+   {
+    "id": 90001040,
+    "name": "IN THE DARK (NORMAL)",
+    "line": "Magma Beast Eddie teams up with Jesterhead to take care of Demon Princes' plots.",
+    "card": "sl_graphic_quest_eddie_beastmagma",
+    "staminaCost": 12,
+    "camera": "CharacterDungeonB",
+    "battles": [
+     {
+      "id": 100003997,
+      "name": "IN_THE_DARK_DUNGEON_01_BATTLE_01",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100003998,
+      "name": "IN_THE_DARK_DUNGEON_01_BATTLE_02",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100003999,
+      "name": "IN_THE_DARK_DUNGEON_01_BATTLE_03",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004000,
+      "name": "IN_THE_DARK_DUNGEON_01_BATTLE_04",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004001,
+      "name": "IN_THE_DARK_DUNGEON_01_BATTLE_05",
+      "arena": "InFlames_roadEnd",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": true
+     }
+    ]
+   },
+   {
+    "id": 90001041,
+    "name": "IN THE DARK (HARD)",
+    "line": "If you had the time to lose, An open mind and time to choose,",
+    "card": "sl_graphic_quest_eddie_oni",
+    "staminaCost": 16,
+    "camera": "CharacterDungeonB",
+    "battles": [
+     {
+      "id": 100004002,
+      "name": "IN_THE_DARK_DUNGEON_02_BATTLE_01",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004003,
+      "name": "IN_THE_DARK_DUNGEON_02_BATTLE_02",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004004,
+      "name": "IN_THE_DARK_DUNGEON_02_BATTLE_03",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004005,
+      "name": "IN_THE_DARK_DUNGEON_02_BATTLE_04",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004006,
+      "name": "IN_THE_DARK_DUNGEON_02_BATTLE_05",
+      "arena": "InFlames_roadEnd",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": true
+     }
+    ]
+   },
+   {
+    "id": 90001042,
+    "name": "IN THE DARK (MADNESS)",
+    "line": "Would you care to take a look, Or can you read me like a book?",
+    "card": "sl_graphic_quest_DemonPrinceAsmodeus",
+    "staminaCost": 20,
+    "camera": "CharacterDungeonB",
+    "battles": [
+     {
+      "id": 100004007,
+      "name": "IN_THE_DARK_DUNGEON_03_BATTLE_01",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004008,
+      "name": "IN_THE_DARK_DUNGEON_03_BATTLE_02",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004009,
+      "name": "IN_THE_DARK_DUNGEON_03_BATTLE_03",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004010,
+      "name": "IN_THE_DARK_DUNGEON_03_BATTLE_04",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004011,
+      "name": "IN_THE_DARK_DUNGEON_03_BATTLE_05",
+      "arena": "InFlames_roadEnd",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": true
+     }
+    ]
+   },
+   {
+    "id": 90001043,
+    "name": "IN THE DARK (INSANITY)",
+    "line": "Time is always on my side.",
+    "card": "sl_graphic_quest_DemonPrinceAstaroth",
+    "staminaCost": 24,
+    "camera": "CharacterDungeonB",
+    "battles": [
+     {
+      "id": 100004012,
+      "name": "IN_THE_DARK_DUNGEON_04_BATTLE_01",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004013,
+      "name": "IN_THE_DARK_DUNGEON_04_BATTLE_02",
+      "arena": "InFlames_road1",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004014,
+      "name": "IN_THE_DARK_DUNGEON_04_BATTLE_03",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004015,
+      "name": "IN_THE_DARK_DUNGEON_04_BATTLE_04",
+      "arena": "hellgate_road2",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": false
+     },
+     {
+      "id": 100004016,
+      "name": "IN_THE_DARK_DUNGEON_04_BATTLE_05",
+      "arena": "InFlames_roadEnd",
+      "music": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+      "boss": true
+     }
+    ]
+   }
+  ],
+  "dialogues": [
+   {
+    "battle": 100003997,
+    "battleNumber": 1,
+    "trigger": "BattleStart",
+    "lines": [
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "What an intriguing place. There is nowhere else to go, nothing above and nothing below."
+     },
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Pffffst. Hsssst."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Of course, I figure that your request at this time to lock down the gate means one thing."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "You’re ready to show everyone that the condemned are here to stay."
+     },
+     {
+      "speaker": "Hellraiser",
+      "portrait": "hud_icon_NCP_hellraiser_purple",
+      "side": "Right",
+      "text": "We know of your plans, usurper! We’re not letting you near the gate!"
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "These are your last words. Trust me, you cannot stop the inevitable."
+     }
+    ]
+   },
+   {
+    "battle": 100003997,
+    "battleNumber": 1,
+    "trigger": "BattleWin",
+    "lines": [
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "With that trivial disruption settled, we shall continue to the gate. I wonder if it’s the same as the others I’ve seen on my… travels."
+     },
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Grssst."
+     }
+    ]
+   },
+   {
+    "battle": 100003999,
+    "battleNumber": 3,
+    "trigger": "BattleStart",
+    "lines": [
+     {
+      "speaker": "Demon Prince Astaroth",
+      "portrait": "hud_icon_DemonPrinceAstaroth",
+      "side": "Right",
+      "text": "Just as I was calling for reinforcements, you just had to show up. The timing is almost too perfect for you."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "The timing [i]was[/i] perfect, actually. Thanks to me, time is always on my side."
+     },
+     {
+      "speaker": "Demon Prince Astaroth",
+      "portrait": "hud_icon_DemonPrinceAstaroth",
+      "side": "Right",
+      "text": "Your defiance is equally as astonishing as it is meaningless. To think that you would even attempt to close the eternal gate. Ludicrous!"
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Enough idle chatter, demon. You’ll make us late. Let’s continue our path, Eddie."
+     }
+    ]
+   },
+   {
+    "battle": 100003999,
+    "battleNumber": 3,
+    "trigger": "BattleWin",
+    "lines": [
+     {
+      "speaker": "Demon Prince Astaroth",
+      "portrait": "hud_icon_DemonPrinceAstaroth",
+      "side": "Right",
+      "text": "Damn you, Eddie. You’re a fool if you think you can close off Hell from Purgatory and beyond permanently!"
+     },
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Jsssspt. Arussptt."
+     },
+     {
+      "speaker": "Demon Prince Astaroth",
+      "portrait": "hud_icon_DemonPrinceAstaroth",
+      "side": "Right",
+      "text": "With all the lies, the ultimate consequence. We all know what’s the end of this route."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Bah, you’re out of time."
+     }
+    ]
+   },
+   {
+    "battle": 100004001,
+    "battleNumber": 5,
+    "trigger": "BattleStart",
+    "lines": [
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "This gate has intriguing magic. I can’t tell the beginning from the end at first glance."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "I’d be in a pickle if I hadn’t been around the block a time or two."
+     },
+     {
+      "speaker": "The Ferryman",
+      "portrait": "hud_icon_ferryman",
+      "side": "Right",
+      "text": "Eddie, I figured it wouldn’t be too long before you’d show up here again. You’ve brought a friend? Hehehe."
+     },
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Prrrggt. Hsssp."
+     },
+     {
+      "speaker": "The Ferryman",
+      "portrait": "hud_icon_ferryman",
+      "side": "Right",
+      "text": "Your scheme makes my job a tad difficult, you know? That gate has been opened for eons. It must remain open for all time."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Troublesome. You think you have a choice, but there’s no other way. I’ve experienced the future with Eddie as the ruler."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Even now, shift your thoughts to the future and see a sealed gate."
+     },
+     {
+      "speaker": "The Ferryman",
+      "portrait": "hud_icon_ferryman",
+      "side": "Right",
+      "text": "There’s gonna be hell to pay if you think I’d let you push your agenda without a fight!"
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "Hey, man. You’ll regret it if you lay your hands on me."
+     }
+    ]
+   },
+   {
+    "battle": 100004001,
+    "battleNumber": 5,
+    "trigger": "BattleWin",
+    "lines": [
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Grssssp. Tssspt."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "It’s settled, this is forever. Nowhere to run, there’s no escape. The eternal gate has been sealed. It’s been fun."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "To think it was finally my turn to lend a hand after seeing other versions of [i]me[/i] help other versions of [i]you[/i]."
+     },
+     {
+      "speaker": "Magma Beast Eddie",
+      "portrait": "hud_icon_eddie_tourbeastmagma",
+      "side": "Left",
+      "text": "Fssst. Fssst. Gruuuh."
+     },
+     {
+      "speaker": "Jesterhead",
+      "portrait": "hud_icon_Jesterhead",
+      "side": "Left",
+      "text": "We’ll meet again, Eddie. In due time."
+     }
+    ]
+   }
+  ]
+ },
+ "sources": [
+  "Characters.csv",
+  "CharacterAbilityLevels.csv",
+  "Actions.csv",
+  "Effects.csv",
+  "Quests.csv",
+  "QuestBattles.csv",
+  "BattleDialogue.csv",
+  "Worlds.csv",
+  "DynamicCurrencies.csv",
+  "localization_en"
+ ]
+}

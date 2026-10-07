@@ -1,0 +1,364 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Jesterhead Archive</title>
+<meta name="description" content="Jesterhead, the In Flames mascot, in Iron Maiden: Legacy of the Beast (“In The Dark” event, July 2023): model, animations, effects, sounds, battle arenas and story, recovered after the game shut down.">
+<link rel="canonical" href="https://kiriancaumes.github.io/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive/">
+<!-- link previews (Discord, Slack, social networks): absolute URLs, SITE_URL in tools/build_site.py -->
+<meta name="theme-color" content="#d4202c">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Jesterhead Archive">
+<meta property="og:title" content="Jesterhead in Iron Maiden: Legacy of the Beast">
+<meta property="og:description" content="The In Flames mascot from the “In The Dark” event (July 2023), rebuilt from game data after the shutdown: 3D viewer with his animations, effects and sounds, the battle arenas, the enemies and the story.">
+<meta property="og:url" content="https://kiriancaumes.github.io/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive/">
+<meta property="og:image" content="https://kiriancaumes.github.io/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive/assets/social-preview.jpg">
+<meta property="og:image:type" content="image/jpeg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Jesterhead, a hooded figure with a clock for a face, in the 3D viewer">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/library/thumbs/hud_icon_Jesterhead.jpg">
+<link rel="preload" href="fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/model/jesterhead.glb" as="fetch" crossorigin>
+<link rel="stylesheet" href="css/style.css">
+<script type="importmap">
+{ "imports": { "three": "./vendor/three/three.module.min.js", "three/addons/": "./vendor/three/addons/" } }
+</script>
+<link rel="modulepreload" href="vendor/three/three.module.min.js">
+<link rel="modulepreload" href="vendor/three/addons/loaders/GLTFLoader.js">
+<link rel="modulepreload" href="vendor/three/addons/utils/BufferGeometryUtils.js">
+<link rel="modulepreload" href="vendor/three/addons/controls/OrbitControls.js">
+<link rel="modulepreload" href="vendor/three/addons/utils/SkeletonUtils.js">
+<link rel="modulepreload" href="js/main.js">
+<link rel="modulepreload" href="js/jester.js">
+<link rel="modulepreload" href="js/character.js">
+<link rel="modulepreload" href="js/particles.js">
+<link rel="modulepreload" href="js/chains.js">
+<link rel="modulepreload" href="js/curves.js">
+<link rel="modulepreload" href="js/arena.js">
+<link rel="modulepreload" href="js/npc.js">
+<link rel="modulepreload" href="js/audio.js">
+<script type="application/json" id="file-sizes">{"model/jesterhead.glb":2095776,"arena/road1.glb":3392252,"arena/road2.glb":2900432,"arena/roadEnd.glb":3086776}</script>
+<script type="module" src="js/main.js"></script>
+</head>
+<body>
+<header class="masthead">
+  <div class="bar">
+    <div class="brand">
+      <img class="logo" src="assets/library/graphic_IM_legacy_logo.webp" alt="Iron Maiden: Legacy of the Beast" width="136" height="34">
+      <span class="sep" aria-hidden="true"></span>
+      <div class="title">
+        <h1>Jesterhead</h1>
+        <p class="kicker">The In Flames mascot &middot; In The Dark event, July 2023</p>
+      </div>
+    </div>
+    <nav aria-label="Sections">
+      <a href="#jesterhead">Character</a><a href="#in-the-dark">In The Dark</a><a href="#notes">Notes</a><a href="#library">Library</a><a href="#about">About</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<section id="viewer" class="viewer" aria-label="3D viewer">
+  <div class="stage">
+    <div id="lightfx" aria-hidden="true"></div>
+    <canvas id="c"></canvas>
+    <p id="status" class="status">Loading model…</p>
+    <p class="hint">Drag to orbit &middot; wheel to zoom &middot; right-drag to pan &middot; F for full screen</p>
+    <button id="fullscreen" class="fs" type="button" aria-pressed="false">Full screen</button>
+    <div class="transport">
+      <button id="play" type="button">Pause</button>
+      <input id="scrub" type="range" min="0" max="1000" value="0" aria-label="Timeline">
+      <span class="time" id="time">0.00 / 0.00 s</span>
+    </div>
+  </div>
+  <aside class="panel">
+    <h2 class="label">Animations</h2>
+    <div class="anims" id="anims"></div>
+    <p class="note" id="travel" hidden>This animation moves the character several metres (he walks in or out of the battlefield).
+      &ldquo;Keep centred&rdquo; follows him; untick it to see the real displacement.</p>
+    <h2 class="label">Scene</h2>
+    <label class="opt"><span>Battle</span>
+      <select id="battle"><option value="">None (no arena)</option><option value="1" data-arena="road1" selected>1 &middot; The road</option><option value="2" data-arena="road1">2 &middot; The road</option><option value="3" data-arena="road2">3 &middot; Hell Gate</option><option value="4" data-arena="road2">4 &middot; Hell Gate</option><option value="5" data-arena="roadEnd">5 &middot; The gate (boss)</option></select></label>
+    <label class="opt"><span>Time period</span>
+      <select id="period"><option value="past">Past</option><option value="present" selected>Present</option><option value="future">Future</option></select></label>
+    <div class="opt"><span>Jesterhead at</span><span class="slots" role="group" aria-label="Jesterhead positions">
+      <label title="ForwardSlot"><input type="checkbox" name="slot" value="ForwardSlot" checked>1</label>
+      <label title="LeftSlot"><input type="checkbox" name="slot" value="LeftSlot">2</label>
+      <label title="RightSlot"><input type="checkbox" name="slot" value="RightSlot">3</label></span></div>
+    <label class="opt"><span>Enemies</span><input id="enemies" type="checkbox"></label>
+    <label class="opt"><span>Battle camera</span><input id="battlecam" type="checkbox"></label>
+    <p class="note" id="arena-status" hidden></p>
+    <h2 class="label">Sound</h2>
+    <label class="opt"><span>Volume</span><input id="volume" type="range" min="0" max="100" step="1" value="5"><output id="volumev">5 %</output></label>
+    <label class="opt"><span>Sound effects</span><input id="sfx" type="checkbox" checked></label>
+    <h2 class="label">Display</h2>
+    <label class="opt"><span>Speed</span><input id="speed" type="range" min="0.1" max="2" step="0.05" value="1"><output id="speedv">1.00×</output></label>
+    <label class="opt"><span>Loop</span><input id="loop" type="checkbox" checked></label>
+    <label class="opt"><span>Particle effects</span><input id="fx" type="checkbox" checked></label>
+    <label class="opt"><span>Watch-chain physics</span><input id="physics" type="checkbox" checked></label>
+    <label class="opt"><span>Ghost faces</span><input id="faces" type="checkbox" checked></label>
+    <label class="opt"><span>Keep centred (enter / leave / revive)</span><input id="inplace" type="checkbox" checked></label>
+    <label class="opt"><span>Controls legend</span><input id="legend" type="checkbox" checked></label>
+    <label class="opt"><span>Auto-rotate</span><input id="spin" type="checkbox"></label>
+    <label class="opt"><span>Wireframe</span><input id="wire" type="checkbox"></label>
+    <button id="reset" type="button" class="wide">Reset camera</button>
+  </aside>
+</section>
+
+<section id="jesterhead" class="wrap doc">
+  <h2>Jesterhead</h2>
+  <div class="profile">
+    <img class="portrait" src="assets/web/ERC_FG_Jesterhead.webp" alt="Jesterhead, login calendar artwork" width="600" height="600" loading="lazy">
+    <div>
+      <p class="lead">The In Flames mascot joined <i>Legacy of the Beast</i> in July 2023 with the In The Dark event: a hooded
+        figure whose face is a clock, with a staff and three pocket watches on chains, surrounded by drifting ghost faces.
+        His three abilities are named after In Flames songs.</p>
+      <dl class="facts">
+        <dt>Class</dt><dd>Sentinel</dd>
+        <dt>Role</dt><dd>Negative Effect Caster</dd>
+        <dt>Ranks</dt><dd>I to V (one to five stars)</dd>
+        <dt>Jesterhead Calendar</dt><dd>&ldquo;Log in a total of 7 days to receive Jesterhead on the final day. Ends August 11th, 5PM PT.&rdquo;</dd>
+      </dl>
+    </div>
+  </div>
+  <h3>Abilities</h3>
+  <div class="abilities">
+    <article class="ability">
+      <img src="assets/web/ABicon_732B_OnlyForTheWeak.webp" alt="" width="96" height="96" loading="lazy">
+      <div><p class="meta">Basic</p><h4>Only for the Weak</h4><ul class="bullets"><li>Deal one hit of magic and true damage to all enemies.</li><li>50% Chance to <span class="kw">Critically Strike</span>.</li><li>If any enemy is suffering from <span class="kw">Bleed effects</span>, including Silver and Innate effects, inflict <span class="kw">Perfect Crave</span> for 2 turns on a random enemy.</li><li>Grant a random <span class="kw">Shield Effect</span> for 3 turns to each ally.</li><li>Revive a random ally with full <span class="kw">HP</span>.</li></ul><button type="button" class="link" data-play="attack">Play in the viewer</button></div>
+    </article><article class="ability">
+      <img src="assets/web/ABicon_732E_TakeThisLife.webp" alt="" width="96" height="96" loading="lazy">
+      <div><p class="meta">Energy &middot; 6 energy</p><h4>Take This Life</h4><ul class="bullets"><li>Deal 2 hits of magic damage to all enemies.</li><li><span class="kw">Steal Beneficial Effects, including Golden Effects</span>, from all enemies.</li><li>If any enemy is suffering from <span class="kw">Perfect Crave</span>, inflict <span class="kw">Perfect Death</span> for 2 turns on a random enemy.</li><li>Revive up to 2 dead allies up to <span class="kw">Max HP</span>.</li><li>Inflict <span class="kw">Bleed</span> for 2 turns on all enemies.</li><li><span class="kw">Permanently increase HP</span> of all allies excluding self by +50%.</li></ul><button type="button" class="link" data-play="energy">Play in the viewer</button></div>
+    </article><article class="ability">
+      <img src="assets/web/ABicon_732P_CrawlThroughKnives.webp" alt="" width="96" height="96" loading="lazy">
+      <div><p class="meta">Passive</p><h4>Crawl Through Knives</h4><p>Immune to Permadeath Effects, Ghost, Dark Ghost and Doom. Remove Crave, Heal Block, and Heal Reduction effects, including silver effects, from all allies at the start of battle and at the start of your turn. Grant a random Shield Effect for 2 turns to all allies at the start of the battle. When you die for the first time, instantly kill another random enemy. When health drops below 50%, gain Cleanse, Immunity to all Negative Effects, including silver effects, and Passive Disable Effects for 2 turns.</p></div>
+    </article>
+  </div>
+  <h3>Statistics</h3>
+  <div class="table-scroll">
+  <table class="stats">
+    <caption>Base values at level 1 for each rank, with the gain per level.</caption>
+    <thead><tr><th scope="col">Rank</th><th scope="col">HP</th><th scope="col">Attack</th><th scope="col">Defense</th>
+      <th scope="col">Magic</th><th scope="col">Magic resist</th><th scope="col">Special</th><th scope="col">Party cost</th></tr></thead>
+    <tbody><tr><th scope="row">I <span class="stars" aria-label="1 stars">★</span></th><td>150<small>+60</small></td><td>100<small>+3</small></td><td>50<small>+1</small></td><td>100<small>+4</small></td><td>50<small>+2</small></td><td>50<small>+1</small></td><td>4</td></tr><tr><th scope="row">II <span class="stars" aria-label="2 stars">★★</span></th><td>1,032<small>+65</small></td><td>126<small>+4</small></td><td>55<small>+2</small></td><td>141<small>+5</small></td><td>70<small>+2</small></td><td>55<small>+2</small></td><td>7</td></tr><tr><th scope="row">III <span class="stars" aria-label="3 stars">★★★</span></th><td>2,854<small>+70</small></td><td>225<small>+5</small></td><td>107<small>+2</small></td><td>269<small>+6</small></td><td>119<small>+2</small></td><td>107<small>+2</small></td><td>10</td></tr><tr><th scope="row">IV <span class="stars" aria-label="4 stars">★★★★</span></th><td>5,587<small>+80</small></td><td>416<small>+6</small></td><td>180<small>+3</small></td><td>498<small>+9</small></td><td>189<small>+4</small></td><td>180<small>+2</small></td><td>13</td></tr><tr><th scope="row">V <span class="stars" aria-label="5 stars">★★★★★</span></th><td>9,526<small>+90</small></td><td>712<small>+8</small></td><td>333<small>+4</small></td><td>967<small>+11</small></td><td>404<small>+6</small></td><td>270<small>+4</small></td><td>16</td></tr></tbody>
+  </table>
+  </div>
+</section>
+
+<section id="in-the-dark" class="wrap doc">
+  <h2>In The Dark</h2>
+  <div class="cols">
+    <div>
+      <p class="lead">&ldquo;Magma Beast Eddie teams up with Jesterhead to take care of Demon Princes&#x27; plots.&rdquo; The event&rsquo;s dungeon had four difficulties, each a run of five
+        battles; the story below is the one told in the Normal run.</p>
+      <p>The five battles take place in three arenas, each with a past, a present and a future version and its own
+        lighting. Every battle played the instrumental of Iron Maiden&rsquo;s &ldquo;Caught Somewhere in Time&rdquo;
+        (<code>Caught_SomeWhere_In_Time_Backing_Track_V4</code> in the game data); the music is not included in this archive.</p>
+      <p class="currency"><img src="assets/web/loot_Currency_MegaE.webp" alt="" width="40" height="40" loading="lazy">
+        <span><b>Enchanted Sigils</b>, the event currency: Earned from the In The Dark Dungeon. Spend currency in Events tab in store.</span></p>
+    </div>
+    <figure class="video">
+      <a href="https://www.youtube.com/watch?v=lcOZMtM2nto" rel="noopener" target="_blank">
+        <img src="assets/web/video-thumbnail.webp" alt="Video: In Flames/Legacy of the Beast, In The Dark, Jesterhead gameplay" width="1120" height="630" loading="lazy">
+        <span class="play-badge">Watch on YouTube</span>
+      </a>
+      <figcaption>In-game footage of Jesterhead in the dungeon, uploaded by
+        <a href="https://www.youtube.com/@jesters_collection" rel="noopener" target="_blank">A Jester&rsquo;s Collection</a>.</figcaption>
+    </figure>
+  </div>
+  <h3>Battles</h3>
+  <p class="small">The enemy line-ups were sent by the game servers and are not in the cached data. These are the ones
+    of the Normal run, read from the gameplay video above and matched to the game&rsquo;s characters by portrait and class.</p>
+  <ol class="battles"><li class="battle">
+      <div class="bhead"><h4>Battle 1</h4><span>The road <code>InFlames_road1</code></span>
+        <button type="button" class="link" data-battle="1">View in 3D</button></div>
+      <ul class="foes"><li><img src="assets/enemies/icons/hellraiser_sentinel.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Hellraiser</b><small>Sentinel &middot; level 55</small></span></li><li><img src="assets/enemies/icons/roller_demon_magus.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Derby Demon</b><small>Magus &middot; level 55</small></span></li><li><img src="assets/enemies/icons/hellraiser_warrior.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Hellraiser</b><small>Warrior &middot; level 60</small></span></li><li><img src="assets/enemies/icons/roller_demon_assassin.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Derby Demon</b><small>Assassin &middot; level 55</small></span></li><li><img src="assets/enemies/icons/hellraiser_gunner.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Hellraiser</b><small>Gunner &middot; level 55</small></span></li></ul>
+    </li><li class="battle">
+      <div class="bhead"><h4>Battle 2</h4><span>The road <code>InFlames_road1</code></span>
+        <button type="button" class="link" data-battle="2">View in 3D</button></div>
+      <ul class="foes"><li><img src="assets/enemies/icons/wrathchild_assassin.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Trickster</b><small>Assassin &middot; level 55</small></span></li><li><img src="assets/enemies/icons/wrathchild_warrior.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Trickster</b><small>Warrior &middot; level 60</small></span></li><li><img src="assets/enemies/icons/wrathchild_mage.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Trickster</b><small>Magus &middot; level 55</small></span></li></ul>
+    </li><li class="battle">
+      <div class="bhead"><h4>Battle 3</h4><span>Hell Gate <code>hellgate_road2</code></span>
+        <button type="button" class="link" data-battle="3">View in 3D</button></div>
+      <ul class="foes"><li><img src="assets/enemies/icons/childofthedamned_a_assassin.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Child of the Damned</b><small>Assassin &middot; level 55</small></span></li><li><img src="assets/enemies/icons/winged_demon_b_tank.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Angel of Strife</b><small>Sentinel &middot; level 55</small></span></li><li><img src="assets/enemies/icons/demon_prince_astaroth.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Demon Prince Astaroth</b><small>Magus &middot; level 60</small></span></li><li><img src="assets/enemies/icons/winged_demon_a_fighter.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Angel of Fear</b><small>Warrior &middot; level 55</small></span></li><li><img src="assets/enemies/icons/childofthedamned_b_gunner.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Child of the Damned</b><small>Gunner &middot; level 55</small></span></li></ul>
+    </li><li class="battle">
+      <div class="bhead"><h4>Battle 4</h4><span>Hell Gate <code>hellgate_road2</code></span>
+        <button type="button" class="link" data-battle="4">View in 3D</button></div>
+      <ul class="foes"><li><img src="assets/enemies/icons/roller_demon_warrior.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Derby Demon</b><small>Warrior &middot; level 55</small></span></li><li><img src="assets/enemies/icons/belshazzar_empowered.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Demon Prince Belshazzar</b><small>Magus &middot; level 60</small></span></li><li><img src="assets/enemies/icons/roller_demon_sentinel.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Derby Demon</b><small>Sentinel &middot; level 55</small></span></li></ul>
+    </li><li class="battle">
+      <div class="bhead"><h4>Battle 5</h4><span>The gate <code>InFlames_roadEnd</code></span>
+        <button type="button" class="link" data-battle="5">View in 3D</button></div>
+      <ul class="foes"><li><img src="assets/enemies/icons/demonskeleton_c.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Soulless Demon</b><small>Sentinel &middot; level 55</small></span></li><li><img src="assets/enemies/icons/demonskeleton_a_01.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Soulless Demon</b><small>Warrior &middot; level 55</small></span></li><li><img src="assets/enemies/icons/the_ferryman.jpg" alt="" width="40" height="40" loading="lazy"><span><b>The Ferryman</b><small>Magus &middot; level 60 &middot; boss</small></span></li><li><img src="assets/enemies/icons/demonskeleton_b.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Soulless Demon</b><small>Assassin &middot; level 55</small></span></li><li><img src="assets/enemies/icons/demonskeleton_c.jpg" alt="" width="40" height="40" loading="lazy"><span><b>Soulless Demon</b><small>Sentinel &middot; level 55</small></span></li></ul>
+    </li></ol>
+  <h3>Difficulties</h3>
+  <div class="quests"><figure class="quest">
+      <img src="assets/web/sl_graphic_quest_eddie_beastmagma.webp" alt="" width="256" height="256" loading="lazy">
+      <figcaption><b>In The Dark (Normal)</b><em>Magma Beast Eddie teams up with Jesterhead to take care of Demon Princes&#x27; plots.</em></figcaption>
+    </figure><figure class="quest">
+      <img src="assets/web/sl_graphic_quest_eddie_oni.webp" alt="" width="256" height="256" loading="lazy">
+      <figcaption><b>In The Dark (Hard)</b><em>If you had the time to lose, An open mind and time to choose,</em></figcaption>
+    </figure><figure class="quest">
+      <img src="assets/web/sl_graphic_quest_DemonPrinceAsmodeus.webp" alt="" width="256" height="256" loading="lazy">
+      <figcaption><b>In The Dark (Madness)</b><em>Would you care to take a look, Or can you read me like a book?</em></figcaption>
+    </figure><figure class="quest">
+      <img src="assets/web/sl_graphic_quest_DemonPrinceAstaroth.webp" alt="" width="256" height="256" loading="lazy">
+      <figcaption><b>In The Dark (Insanity)</b><em>Time is always on my side.</em></figcaption>
+    </figure></div>
+  <details class="story">
+    <summary>Story (dialogue of the Normal difficulty)</summary>
+    <div class="scene"><h4>Battle 1, before the fight</h4><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> What an intriguing place. There is nowhere else to go, nothing above and nothing below.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Pffffst. Hsssst.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Of course, I figure that your request at this time to lock down the gate means one thing.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> You’re ready to show everyone that the condemned are here to stay.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_NCP_hellraiser_purple.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Hellraiser</b> We know of your plans, usurper! We’re not letting you near the gate!</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> These are your last words. Trust me, you cannot stop the inevitable.</p></div></div><div class="scene"><h4>Battle 1, after the fight</h4><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> With that trivial disruption settled, we shall continue to the gate. I wonder if it’s the same as the others I’ve seen on my… travels.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Grssst.</p></div></div><div class="scene"><h4>Battle 3, before the fight</h4><div class="line right"><img src="assets/event/img/portraits/hud_icon_DemonPrinceAstaroth.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Demon Prince Astaroth</b> Just as I was calling for reinforcements, you just had to show up. The timing is almost too perfect for you.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> The timing <em>was</em> perfect, actually. Thanks to me, time is always on my side.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_DemonPrinceAstaroth.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Demon Prince Astaroth</b> Your defiance is equally as astonishing as it is meaningless. To think that you would even attempt to close the eternal gate. Ludicrous!</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Enough idle chatter, demon. You’ll make us late. Let’s continue our path, Eddie.</p></div></div><div class="scene"><h4>Battle 3, after the fight</h4><div class="line right"><img src="assets/event/img/portraits/hud_icon_DemonPrinceAstaroth.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Demon Prince Astaroth</b> Damn you, Eddie. You’re a fool if you think you can close off Hell from Purgatory and beyond permanently!</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Jsssspt. Arussptt.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_DemonPrinceAstaroth.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Demon Prince Astaroth</b> With all the lies, the ultimate consequence. We all know what’s the end of this route.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Bah, you’re out of time.</p></div></div><div class="scene"><h4>Battle 5, before the fight</h4><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> This gate has intriguing magic. I can’t tell the beginning from the end at first glance.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> I’d be in a pickle if I hadn’t been around the block a time or two.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_ferryman.jpg" alt="" width="44" height="44" loading="lazy"><p><b>The Ferryman</b> Eddie, I figured it wouldn’t be too long before you’d show up here again. You’ve brought a friend? Hehehe.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Prrrggt. Hsssp.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_ferryman.jpg" alt="" width="44" height="44" loading="lazy"><p><b>The Ferryman</b> Your scheme makes my job a tad difficult, you know? That gate has been opened for eons. It must remain open for all time.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Troublesome. You think you have a choice, but there’s no other way. I’ve experienced the future with Eddie as the ruler.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Even now, shift your thoughts to the future and see a sealed gate.</p></div><div class="line right"><img src="assets/event/img/portraits/hud_icon_ferryman.jpg" alt="" width="44" height="44" loading="lazy"><p><b>The Ferryman</b> There’s gonna be hell to pay if you think I’d let you push your agenda without a fight!</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> Hey, man. You’ll regret it if you lay your hands on me.</p></div></div><div class="scene"><h4>Battle 5, after the fight</h4><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Grssssp. Tssspt.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> It’s settled, this is forever. Nowhere to run, there’s no escape. The eternal gate has been sealed. It’s been fun.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> To think it was finally my turn to lend a hand after seeing other versions of <em>me</em> help other versions of <em>you</em>.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_eddie_tourbeastmagma.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Magma Beast Eddie</b> Fssst. Fssst. Gruuuh.</p></div><div class="line left"><img src="assets/event/img/portraits/hud_icon_Jesterhead.jpg" alt="" width="44" height="44" loading="lazy"><p><b>Jesterhead</b> We’ll meet again, Eddie. In due time.</p></div></div>
+  </details>
+  <div class="gallery">
+    <figure><a href="assets/event/key-art.jpg"><img src="assets/web/key-art.webp" alt="Event key art: Jesterhead with Eddie" width="830" height="350" loading="lazy"></a>
+      <figcaption>Event key art. Via <a href="https://www.theprp.com/2023/07/12/news/in-flames-jesterhead-added-to-iron-maidens-legacy-of-the-beast-video-game/" rel="noopener" target="_blank">ThePRP</a>.</figcaption></figure>
+    <figure><img src="assets/web/event-banner-landscape.webp" alt="Event banner" width="600" height="338" loading="lazy">
+      <figcaption>In-game event banner (low resolution copy).</figcaption></figure>
+  </div>
+</section>
+
+<section id="notes" class="wrap doc">
+  <h2>Notes</h2>
+  <div class="cols">
+    <div>
+      <h3>How it was rebuilt</h3>
+      <p>The game (Roadhouse Interactive, then Nodding Frog) closed on 31&nbsp;December&nbsp;2024 and its content servers went
+        offline with it. Everything here comes from the download cache of a phone where the game was still installed
+        (193 Unity asset bundles, 3.5&nbsp;GB) and from the game&rsquo;s application package.</p>
+      <ol class="steps">
+        <li>Model, skeleton and the 11 animation clips were read from the bundles and assembled into a skinned glTF file.</li>
+        <li>The game&rsquo;s shaders were exported as compiled GLSL and ported as they are, for the character, the particles and
+          the arenas (baked vertex lighting and distance fog ramps).</li>
+        <li>Which effect, sound or camera plays when comes from the game&rsquo;s scripts, recovered from the IL2CPP binary and read
+          instruction by instruction, and from the character, ability and quest data.</li>
+        <li>Names, descriptions and dialogue come from the game&rsquo;s own data tables and English text.</li>
+      </ol>
+    </div>
+    <div>
+      <h3>Fidelity</h3>
+      <table class="fidelity">
+        <thead><tr><th scope="col">Part</th><th scope="col">Status</th></tr></thead>
+        <tbody>
+          <tr><td>Mesh, textures, animations</td><td><span class="s ok">Exact</span> Extracted data (curves resampled at 30&nbsp;fps). The viewer loads lighter copies (WebP textures, redundant keyframes removed); the full-quality files are in the repository.</td></tr>
+          <tr><td>Character and arena shading</td><td><span class="s ok">Ported</span> Same formulas as the game shaders.</td></tr>
+          <tr><td>Arena layout, lighting, time periods</td><td><span class="s ok">Exact</span> Scene data, baked colours and fog ramps.</td></tr>
+          <tr><td>Effect and sound timing, battle camera</td><td><span class="s ok">Ported</span> Logic read from the game scripts and data, including the camera moves of Take This Life (battle camera on).</td></tr>
+          <tr><td>Particle effects</td><td><span class="s approx">Re-simulated</span> Same parameters; Unity&rsquo;s engine code is not public, so motion is close but not frame-identical.</td></tr>
+          <tr><td>Watch chains</td><td><span class="s approx">Approximated</span> PhysX joints replaced by a rope simulation with the same lengths.</td></tr>
+          <tr><td>Sound mix</td><td><span class="s approx">Approximated</span> Clips and volumes are the game&rsquo;s; the mixer settings are not reproduced.</td></tr>
+          <tr><td>Enemy line-ups</td><td><span class="s approx">From footage</span> Sent by the game servers, not in the cached data; read from a recording of the Normal run. Idle animation only.</td></tr>
+        </tbody>
+      </table>
+      <p class="small">Details, with the addresses of the game functions involved: <code>docs/technical-notes.md</code> in the repository.</p>
+    </div>
+  </div>
+</section>
+
+<section id="library" class="wrap doc">
+  <h2>Asset library</h2>
+  <p class="lead">Files as extracted from the game data. Character textures keep their alpha channel: there it is the emission mask,
+    not transparency.</p>
+  <div class="lib-group"><h3>Artwork and icons</h3><div class="lib">
+  <figure class="item"><a class="thumb" href="assets/library/graphic_IM_legacy_logo.png"><img src="assets/library/thumbs/graphic_IM_legacy_logo.jpg" alt="" width="320" height="80" loading="lazy"></a><figcaption><b><a href="assets/library/graphic_IM_legacy_logo.png" download>graphic_IM_legacy_logo.png</a></b>512&times;128 &middot; 100.6 KB<br>Game logo, from the application package.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/ERC_FG_Jesterhead.png"><img src="assets/library/thumbs/ERC_FG_Jesterhead.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/ERC_FG_Jesterhead.png" download>ERC_FG_Jesterhead.png</a></b>1024&times;1024 &middot; 415.9 KB<br>Login calendar artwork.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/ERC_FG_Jesterhead_psd.png"><img src="assets/library/thumbs/ERC_FG_Jesterhead_psd.jpg" alt="" width="160" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/ERC_FG_Jesterhead_psd.png" download>ERC_FG_Jesterhead_psd.png</a></b>512&times;1024 &middot; 362.1 KB<br>Same artwork, tall layout variant.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/carousel_732_Jesterhead.png"><img src="assets/library/thumbs/carousel_732_Jesterhead.jpg" alt="" width="256" height="256" loading="lazy"></a><figcaption><b><a href="assets/library/carousel_732_Jesterhead.png" download>carousel_732_Jesterhead.png</a></b>256&times;256 &middot; 58.0 KB<br>Store carousel tile.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/hud_icon_Jesterhead.png"><img src="assets/library/thumbs/hud_icon_Jesterhead.jpg" alt="" width="128" height="128" loading="lazy"></a><figcaption><b><a href="assets/library/hud_icon_Jesterhead.png" download>hud_icon_Jesterhead.png</a></b>128&times;128 &middot; 21.8 KB<br>Battle HUD portrait.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/ABicon_732B_OnlyForTheWeak.png"><img src="assets/library/thumbs/ABicon_732B_OnlyForTheWeak.jpg" alt="" width="128" height="128" loading="lazy"></a><figcaption><b><a href="assets/event/img/ABicon_732B_OnlyForTheWeak.png" download>ABicon_732B_OnlyForTheWeak.png</a></b>128&times;128 &middot; 19.1 KB<br>Basic ability icon, Only for the Weak.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/ABicon_732E_TakeThisLife.png"><img src="assets/library/thumbs/ABicon_732E_TakeThisLife.jpg" alt="" width="128" height="128" loading="lazy"></a><figcaption><b><a href="assets/event/img/ABicon_732E_TakeThisLife.png" download>ABicon_732E_TakeThisLife.png</a></b>128&times;128 &middot; 20.0 KB<br>Energy ability icon, Take This Life.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/ABicon_732P_CrawlThroughKnives.png"><img src="assets/library/thumbs/ABicon_732P_CrawlThroughKnives.jpg" alt="" width="128" height="128" loading="lazy"></a><figcaption><b><a href="assets/event/img/ABicon_732P_CrawlThroughKnives.png" download>ABicon_732P_CrawlThroughKnives.png</a></b>128&times;128 &middot; 22.0 KB<br>Passive ability icon, Crawl Through Knives.</figcaption></figure>
+  </div></div>
+  <div class="lib-group"><h3>Character textures</h3><div class="lib">
+  <figure class="item"><a class="thumb" href="assets/library/jesterhead_diff.png"><img src="assets/library/thumbs/jesterhead_diff.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/jesterhead_diff.png" download>jesterhead_diff.png</a></b>2048&times;2048 &middot; 2.7 MB<br>Main texture. Alpha = emission mask (watch face, crystal).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/jesterhead_gear_diff.png"><img src="assets/library/thumbs/jesterhead_gear_diff.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/jesterhead_gear_diff.png" download>jesterhead_gear_diff.png</a></b>512&times;512 &middot; 303.9 KB<br>Staff, watches and chains. Alpha = emission mask.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/jesterhead_skirt_faces_5.png"><img src="assets/library/thumbs/jesterhead_skirt_faces_5.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/jesterhead_skirt_faces_5.png" download>jesterhead_skirt_faces_5.png</a></b>1024&times;1024 &middot; 209.1 KB<br>Ghost faces scrolling on the robe.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/jesterhead_skirt_faces_6.png"><img src="assets/library/thumbs/jesterhead_skirt_faces_6.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/jesterhead_skirt_faces_6.png" download>jesterhead_skirt_faces_6.png</a></b>1024&times;1024 &middot; 342.3 KB<br>Ghost faces scrolling on the upper body.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/jesterhead_diff_moving.png"><img src="assets/library/thumbs/jesterhead_diff_moving.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/jesterhead_diff_moving.png" download>jesterhead_diff_moving.png</a></b>2048&times;2048 &middot; 2.1 MB<br>Alternate robe texture (disabled in the prefab).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/characterramp_1_8_hell.png"><img src="assets/library/thumbs/characterramp_1_8_hell.jpg" alt="" width="320" height="40" loading="lazy"></a><figcaption><b><a href="assets/library/characterramp_1_8_hell.png" download>characterramp_1_8_hell.png</a></b>256&times;16 &middot; 2.0 KB<br>Light ramp of the character shader.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/rim_ramp.png"><img src="assets/library/thumbs/rim_ramp.jpg" alt="" width="32" height="256" loading="lazy"></a><figcaption><b><a href="assets/library/rim_ramp.png" download>rim_ramp.png</a></b>2&times;256 &middot; 357 B<br>Rim ramp of the character shader.</figcaption></figure>
+  </div></div>
+  <div class="lib-group"><h3>In The Dark</h3><div class="lib">
+  <figure class="item"><a class="thumb" href="assets/event/img/sl_graphic_quest_eddie_beastmagma.png"><img src="assets/library/thumbs/sl_graphic_quest_eddie_beastmagma.jpg" alt="" width="256" height="256" loading="lazy"></a><figcaption><b><a href="assets/event/img/sl_graphic_quest_eddie_beastmagma.png" download>sl_graphic_quest_eddie_beastmagma.png</a></b>256&times;256 &middot; 69.0 KB<br>Quest card, In The Dark (Normal).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/sl_graphic_quest_eddie_oni.png"><img src="assets/library/thumbs/sl_graphic_quest_eddie_oni.jpg" alt="" width="256" height="256" loading="lazy"></a><figcaption><b><a href="assets/event/img/sl_graphic_quest_eddie_oni.png" download>sl_graphic_quest_eddie_oni.png</a></b>256&times;256 &middot; 64.9 KB<br>Quest card, In The Dark (Hard).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/sl_graphic_quest_DemonPrinceAsmodeus.png"><img src="assets/library/thumbs/sl_graphic_quest_DemonPrinceAsmodeus.jpg" alt="" width="256" height="256" loading="lazy"></a><figcaption><b><a href="assets/event/img/sl_graphic_quest_DemonPrinceAsmodeus.png" download>sl_graphic_quest_DemonPrinceAsmodeus.png</a></b>256&times;256 &middot; 78.5 KB<br>Quest card, In The Dark (Madness).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/sl_graphic_quest_DemonPrinceAstaroth.png"><img src="assets/library/thumbs/sl_graphic_quest_DemonPrinceAstaroth.jpg" alt="" width="256" height="256" loading="lazy"></a><figcaption><b><a href="assets/event/img/sl_graphic_quest_DemonPrinceAstaroth.png" download>sl_graphic_quest_DemonPrinceAstaroth.png</a></b>256&times;256 &middot; 71.7 KB<br>Quest card, In The Dark (Insanity).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/event/img/loot_Currency_MegaE.png"><img src="assets/library/thumbs/loot_Currency_MegaE.jpg" alt="" width="128" height="128" loading="lazy"></a><figcaption><b><a href="assets/event/img/loot_Currency_MegaE.png" download>loot_Currency_MegaE.png</a></b>128&times;128 &middot; 23.7 KB<br>Enchanted Sigils, the event currency.</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/Inflames_symbol_glow_dif.png"><img src="assets/library/thumbs/Inflames_symbol_glow_dif.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/Inflames_symbol_glow_dif.png" download>Inflames_symbol_glow_dif.png</a></b>512&times;512 &middot; 68.7 KB<br>Glowing In Flames sigil: floats over the road (battles 1 and 2) and burns in the fire portal of the final gate (past and present).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/Inflames_Frame_no_lighting_dif.png"><img src="assets/library/thumbs/Inflames_Frame_no_lighting_dif.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/Inflames_Frame_no_lighting_dif.png" download>Inflames_Frame_no_lighting_dif.png</a></b>1024&times;1024 &middot; 988.0 KB<br>Ring frame of the final gate in the future period, when the gate is sealed (arena of battle 5).</figcaption></figure>
+  <figure class="item"><a class="thumb" href="assets/library/Inflames_platform_dif.png"><img src="assets/library/thumbs/Inflames_platform_dif.jpg" alt="" width="320" height="320" loading="lazy"></a><figcaption><b><a href="assets/library/Inflames_platform_dif.png" download>Inflames_platform_dif.png</a></b>1024&times;1024 &middot; 947.2 KB<br>Floor of the final arena in the future period, engraved with the In Flames sigil.</figcaption></figure>
+  </div></div>
+  <div class="lib-group"><h3>Model and data</h3><table class="files"><tbody>
+  <tr><td><a href="assets/model/jesterhead.glb" download>jesterhead.glb</a></td><td>Skinned model with its 11 animations (glTF binary, textures embedded).</td><td>2.0 MB</td></tr>
+  <tr><td><a href="assets/library/jesterhead_obj_meshes.zip" download>jesterhead_obj_meshes.zip</a></td><td>The 9 meshes as static OBJ files, in bind pose.</td><td>193.0 KB</td></tr>
+  <tr><td><a href="assets/vfx.json" download>vfx.json</a></td><td>Particle systems, effect triggers, tweens and chains.</td><td>649.8 KB</td></tr>
+  <tr><td><a href="assets/arena/road1.glb" download>road1.glb</a></td><td>Arena InFlames_road1 (battles 1 and 2), the three time periods.</td><td>3.2 MB</td></tr>
+  <tr><td><a href="assets/arena/road2.glb" download>road2.glb</a></td><td>Arena hellgate_road2 (battles 3 and 4), the three time periods.</td><td>2.8 MB</td></tr>
+  <tr><td><a href="assets/arena/roadEnd.glb" download>roadEnd.glb</a></td><td>Arena InFlames_roadEnd (boss battle), the three time periods.</td><td>2.9 MB</td></tr>
+  <tr><td><a href="assets/arena/arena.json" download>arena.json</a></td><td>Arena materials, fog ramps, animations, particles, battle camera and slot.</td><td>261.7 KB</td></tr>
+  <tr><td><a href="assets/event/data.json" download>data.json</a></td><td>Character, abilities, quests and dialogue, from the game data tables.</td><td>15.9 KB</td></tr>
+  <tr><td><a href="assets/enemies/lineups.json" download>lineups.json</a></td><td>Enemy line-ups of the five battles, with names, classes and levels.</td><td>6.9 KB</td></tr>
+  </tbody></table></div>
+  <div class="lib-group"><h3>Enemies</h3><table class="files"><tbody>
+  <tr><td><a href="assets/enemies/winged_demon_a_fighter.glb" download>winged_demon_a_fighter.glb</a></td><td>Angel of Fear (Warrior), battle 3. Idle animation <code>npc_wingedDemon_Idle_anm</code>.</td><td>488.0 KB</td></tr>
+  <tr><td><a href="assets/enemies/winged_demon_b_tank.glb" download>winged_demon_b_tank.glb</a></td><td>Angel of Strife (Sentinel), battle 3. Idle animation <code>npc_wingedDemon_Idle_anm</code>.</td><td>487.9 KB</td></tr>
+  <tr><td><a href="assets/enemies/childofthedamned_a_assassin.glb" download>childofthedamned_a_assassin.glb</a></td><td>Child of the Damned (Assassin), battle 3. Idle animation <code>eddie_assassin_idle_anm</code>.</td><td>355.8 KB</td></tr>
+  <tr><td><a href="assets/enemies/childofthedamned_b_gunner.glb" download>childofthedamned_b_gunner.glb</a></td><td>Child of the Damned (Gunner), battle 3. Idle animation <code>Idle_Regal_anm</code>.</td><td>363.7 KB</td></tr>
+  <tr><td><a href="assets/enemies/demon_prince_astaroth.glb" download>demon_prince_astaroth.glb</a></td><td>Demon Prince Astaroth (Magus), battle 3. Idle animation <code>demon_prince_astaroth_Iddle_anm</code>.</td><td>974.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/belshazzar_empowered.glb" download>belshazzar_empowered.glb</a></td><td>Demon Prince Belshazzar (Magus), battle 4. Idle animation <code>necropolis_idle_anm</code>.</td><td>556.4 KB</td></tr>
+  <tr><td><a href="assets/enemies/roller_demon_assassin.glb" download>roller_demon_assassin.glb</a></td><td>Derby Demon (Assassin), battle 1. Idle animation <code>rollerdevilA_idle_C_anm</code>.</td><td>469.4 KB</td></tr>
+  <tr><td><a href="assets/enemies/roller_demon_magus.glb" download>roller_demon_magus.glb</a></td><td>Derby Demon (Magus), battle 1. Idle animation <code>rollerdevilA_idle_D_anm</code>.</td><td>437.2 KB</td></tr>
+  <tr><td><a href="assets/enemies/roller_demon_sentinel.glb" download>roller_demon_sentinel.glb</a></td><td>Derby Demon (Sentinel), battle 4. Idle animation <code>rollerdevilA_idle_B_anm</code>.</td><td>708.9 KB</td></tr>
+  <tr><td><a href="assets/enemies/roller_demon_warrior.glb" download>roller_demon_warrior.glb</a></td><td>Derby Demon (Warrior), battle 4. Idle animation <code>rollerdevilA_idle_A_anm</code>.</td><td>578.4 KB</td></tr>
+  <tr><td><a href="assets/enemies/hellraiser_gunner.glb" download>hellraiser_gunner.glb</a></td><td>Hellraiser (Gunner), battle 1. Idle animation <code>Boss_Heavy_Idle_alt01_anm</code>.</td><td>459.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/hellraiser_sentinel.glb" download>hellraiser_sentinel.glb</a></td><td>Hellraiser (Sentinel), battle 1. Idle animation <code>Boss_Heavy_Idle_alt01_anm</code>.</td><td>460.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/hellraiser_warrior.glb" download>hellraiser_warrior.glb</a></td><td>Hellraiser (Warrior), battle 1. Idle animation <code>Boss_Heavy_Idle_alt01_anm</code>.</td><td>457.4 KB</td></tr>
+  <tr><td><a href="assets/enemies/demonskeleton_b.glb" download>demonskeleton_b.glb</a></td><td>Soulless Demon (Assassin), battle 5. Idle animation <code>Idle_melee_01</code>.</td><td>451.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/demonskeleton_c.glb" download>demonskeleton_c.glb</a></td><td>Soulless Demon (Sentinel), battle 5. Idle animation <code>Idle_melee_01</code>.</td><td>451.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/demonskeleton_a_01.glb" download>demonskeleton_a_01.glb</a></td><td>Soulless Demon (Warrior), battle 5. Idle animation <code>Idle_melee_01</code>.</td><td>451.3 KB</td></tr>
+  <tr><td><a href="assets/enemies/the_ferryman.glb" download>the_ferryman.glb</a></td><td>The Ferryman (Magus), battle 5. Idle animation <code>ferryman_idle_anm</code>.</td><td>523.7 KB</td></tr>
+  <tr><td><a href="assets/enemies/wrathchild_assassin.glb" download>wrathchild_assassin.glb</a></td><td>Trickster (Assassin), battle 2. Idle animation <code>ncity_tattoo_idle_anm</code>.</td><td>372.9 KB</td></tr>
+  <tr><td><a href="assets/enemies/wrathchild_mage.glb" download>wrathchild_mage.glb</a></td><td>Trickster (Magus), battle 2. Idle animation <code>ncity_tattoo_idle_anm</code>.</td><td>374.5 KB</td></tr>
+  <tr><td><a href="assets/enemies/wrathchild_warrior.glb" download>wrathchild_warrior.glb</a></td><td>Trickster (Warrior), battle 2. Idle animation <code>ncity_tattoo_idle_anm</code>.</td><td>373.6 KB</td></tr>
+  </tbody></table></div>
+  <div class="lib-group"><h3>Sound</h3><table class="files"><tbody>
+  <tr><td><a href="assets/audio/Jesterhead_Attack_01.ogg" download>Jesterhead_Attack_01.ogg</a></td><td>Only for the Weak (attack_single_01). 6.0&nbsp;s</td><td>142.3 KB</td></tr>
+  <tr><td><a href="assets/audio/Jesterhead_Attack_03.ogg" download>Jesterhead_Attack_03.ogg</a></td><td>Take This Life (attack_single_03). 6.5&nbsp;s</td><td>171.0 KB</td></tr>
+  <tr><td><a href="assets/audio/despawn_whoosh.ogg" download>despawn_whoosh.ogg</a></td><td>Death. 1.5&nbsp;s</td><td>34.3 KB</td></tr>
+  <tr><td><a href="assets/audio/Revive_March15_2016.ogg" download>Revive_March15_2016.ogg</a></td><td>Revive (shared by all characters). 1.9&nbsp;s</td><td>45.5 KB</td></tr>
+  <tr><td><a href="assets/audio/Leve_Up_Star_Slam.ogg" download>Leve_Up_Star_Slam.ogg</a></td><td>Each tap of a &ldquo;tap rapidly&rdquo; prompt. 0.8&nbsp;s</td><td>20.2 KB</td></tr>
+  <tr><td><a href="assets/audio/bc_amb_mapHub_fe_stage1.ogg" download>bc_amb_mapHub_fe_stage1.ogg</a></td><td>Ambience of the In The Dark map. 63.5&nbsp;s</td><td>937.6 KB</td></tr>
+  </tbody></table>
+  <p class="small">Sounds are re-encoded (Ogg Vorbis) from the game&rsquo;s decoded audio. The battle music, the instrumental of Iron Maiden&rsquo;s &ldquo;Caught Somewhere in Time&rdquo;, is not included.</p></div>
+</section>
+
+<section id="about" class="wrap doc">
+  <h2>About this archive</h2>
+  <div class="cols">
+    <div>
+      <p>An unofficial, non-commercial preservation archive. Source code, extraction scripts and technical notes:
+        <a href="https://github.com/KirianCaumes/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive" rel="noopener" target="_blank">github.com/KirianCaumes/In-Flames-Iron-Maiden-Legacy-of-the-Beast-Archive</a>.</p>
+      <p>The extraction, the reconstruction and this site were generated by Claude (Anthropic), working in Claude Code.</p>
+      <h3>Tools</h3>
+      <ul class="plain">
+        <li><a href="https://github.com/K0lb3/UnityPy" rel="noopener" target="_blank">UnityPy</a> and <a href="https://github.com/AssetRipper/AssetRipper" rel="noopener" target="_blank">AssetRipper</a> to read the bundles</li>
+        <li><a href="https://github.com/Perfare/Il2CppDumper" rel="noopener" target="_blank">Il2CppDumper</a> and <a href="https://www.capstone-engine.org" rel="noopener" target="_blank">Capstone</a> to read the game code</li>
+        <li><a href="https://threejs.org" rel="noopener" target="_blank">three.js</a> r170 for rendering (bundled, MIT) &middot; IBM Plex fonts (bundled, OFL)</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Rights</h3>
+      <p class="small">Jesterhead is the mascot of In Flames. Iron Maiden, Eddie and <i>Legacy of the Beast</i> belong to their
+        respective owners; the game was developed by Roadhouse Interactive and Nodding Frog. Assets are reproduced for documentation only and
+        remain the property of their owners. The game&rsquo;s Iron Maiden music is not included.</p>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer class="wrap footer">
+  <p>Unofficial archive &middot; rebuilt in October 2026 from game data recovered after the shutdown.</p>
+</footer>
+</body>
+</html>

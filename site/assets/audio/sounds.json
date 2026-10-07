@@ -1,0 +1,85 @@
+{
+ "states": {
+  "attack_single_01": {
+   "clip": "Jesterhead_Attack_01",
+   "volume": 0.909,
+   "delay": 0.0
+  },
+  "attack_single_03": {
+   "clip": "Jesterhead_Attack_03",
+   "volume": 0.909,
+   "delay": 0.0
+  },
+  "Death01": {
+   "clip": "despawn_whoosh",
+   "volume": 0.96,
+   "delay": 0.0
+  },
+  "Revive": {
+   "clip": "Revive_March15_2016",
+   "volume": 1.0,
+   "delay": 0.0
+  }
+ },
+ "taps": [
+  {
+   "clip": "Leve_Up_Star_Slam",
+   "volume": 1.0,
+   "delay": 0.0
+  },
+  {
+   "clip": "Leve_Up_Star_Slam",
+   "volume": 1.0,
+   "delay": 0.0
+  },
+  {
+   "clip": "Leve_Up_Star_Slam",
+   "volume": 1.0,
+   "delay": 0.0
+  }
+ ],
+ "ambience": {
+  "map": {
+   "clip": "bc_amb_mapHub_fe_stage1"
+  }
+ },
+ "music": {
+  "battle": {
+   "clip": "Caught_SomeWhere_In_Time_Backing_Track_V4",
+   "title": "Caught Somewhere in Time (instrumental)",
+   "artist": "Iron Maiden",
+   "included": false
+  }
+ },
+ "files": {
+  "Jesterhead_Attack_01": {
+   "ogg": "Jesterhead_Attack_01.ogg",
+   "mp3": "Jesterhead_Attack_01.mp3",
+   "length": 5.984
+  },
+  "Jesterhead_Attack_03": {
+   "ogg": "Jesterhead_Attack_03.ogg",
+   "mp3": "Jesterhead_Attack_03.mp3",
+   "length": 6.533
+  },
+  "despawn_whoosh": {
+   "ogg": "despawn_whoosh.ogg",
+   "mp3": "despawn_whoosh.mp3",
+   "length": 1.466
+  },
+  "Revive_March15_2016": {
+   "ogg": "Revive_March15_2016.ogg",
+   "mp3": "Revive_March15_2016.mp3",
+   "length": 1.853
+  },
+  "Leve_Up_Star_Slam": {
+   "ogg": "Leve_Up_Star_Slam.ogg",
+   "mp3": "Leve_Up_Star_Slam.mp3",
+   "length": 0.834
+  },
+  "bc_amb_mapHub_fe_stage1": {
+   "ogg": "bc_amb_mapHub_fe_stage1.ogg",
+   "length": 63.53
+  }
+ }
+}

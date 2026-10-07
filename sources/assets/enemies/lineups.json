@@ -1,0 +1,298 @@
+{
+ "source": "observed in gameplay footage of the Normal run (the line-ups were served by the game servers)",
+ "battles": [
+  {
+   "battle": 1,
+   "enemies": [
+    {
+     "slot": "Slot01",
+     "id": "hellraiser_sentinel",
+     "level": 55
+    },
+    {
+     "slot": "Slot02",
+     "id": "roller_demon_magus",
+     "level": 55
+    },
+    {
+     "slot": "Slot03",
+     "id": "hellraiser_warrior",
+     "level": 60
+    },
+    {
+     "slot": "Slot04",
+     "id": "roller_demon_assassin",
+     "level": 55
+    },
+    {
+     "slot": "Slot05",
+     "id": "hellraiser_gunner",
+     "level": 55
+    }
+   ]
+  },
+  {
+   "battle": 2,
+   "enemies": [
+    {
+     "slot": "Slot01",
+     "id": "wrathchild_assassin",
+     "level": 55
+    },
+    {
+     "slot": "Slot03",
+     "id": "wrathchild_warrior",
+     "level": 60
+    },
+    {
+     "slot": "Slot05",
+     "id": "wrathchild_mage",
+     "level": 55
+    }
+   ]
+  },
+  {
+   "battle": 3,
+   "enemies": [
+    {
+     "slot": "Slot01",
+     "id": "childofthedamned_a_assassin",
+     "level": 55
+    },
+    {
+     "slot": "Slot02",
+     "id": "winged_demon_b_tank",
+     "level": 55
+    },
+    {
+     "slot": "Slot03",
+     "id": "demon_prince_astaroth",
+     "level": 60
+    },
+    {
+     "slot": "Slot04",
+     "id": "winged_demon_a_fighter",
+     "level": 55
+    },
+    {
+     "slot": "Slot05",
+     "id": "childofthedamned_b_gunner",
+     "level": 55
+    }
+   ]
+  },
+  {
+   "battle": 4,
+   "enemies": [
+    {
+     "slot": "Slot01",
+     "id": "roller_demon_warrior",
+     "level": 55
+    },
+    {
+     "slot": "Slot03",
+     "id": "belshazzar_empowered",
+     "level": 60
+    },
+    {
+     "slot": "Slot05",
+     "id": "roller_demon_sentinel",
+     "level": 55
+    }
+   ]
+  },
+  {
+   "battle": 5,
+   "enemies": [
+    {
+     "slot": "Slot01",
+     "id": "demonskeleton_c",
+     "level": 55
+    },
+    {
+     "slot": "Slot02",
+     "id": "demonskeleton_a_01",
+     "level": 55
+    },
+    {
+     "slot": "Slot03",
+     "id": "the_ferryman",
+     "level": 60,
+     "boss": true
+    },
+    {
+     "slot": "Slot04",
+     "id": "demonskeleton_b",
+     "level": 55
+    },
+    {
+     "slot": "Slot05",
+     "id": "demonskeleton_c",
+     "level": 55
+    }
+   ]
+  }
+ ],
+ "characters": {
+  "belshazzar_empowered": {
+   "name": "Demon Prince Belshazzar",
+   "class": "Magus",
+   "prefab": "Belshazzar_Empowered_Prefab",
+   "idle": "necropolis_idle_anm",
+   "file": "belshazzar_empowered.glb",
+   "icon": "icons/belshazzar_empowered.jpg"
+  },
+  "childofthedamned_a_assassin": {
+   "name": "Child of the Damned",
+   "class": "Assassin",
+   "prefab": "Child_Of_The_Damned_Assassin_Prefab",
+   "idle": "eddie_assassin_idle_anm",
+   "file": "childofthedamned_a_assassin.glb",
+   "icon": "icons/childofthedamned_a_assassin.jpg"
+  },
+  "childofthedamned_b_gunner": {
+   "name": "Child of the Damned",
+   "class": "Gunner",
+   "prefab": "Child_Of_The_Damned_Gunner_Prefab",
+   "idle": "Idle_Regal_anm",
+   "file": "childofthedamned_b_gunner.glb",
+   "icon": "icons/childofthedamned_b_gunner.jpg"
+  },
+  "demon_prince_astaroth": {
+   "name": "Demon Prince Astaroth",
+   "class": "Magus",
+   "prefab": "Demon_Prince_Astaroth_Prefab",
+   "idle": "demon_prince_astaroth_Iddle_anm",
+   "file": "demon_prince_astaroth.glb",
+   "icon": "icons/demon_prince_astaroth.jpg"
+  },
+  "demonskeleton_a_01": {
+   "name": "Soulless Demon",
+   "class": "Warrior",
+   "prefab": "hell_demonskeleton_1_a_Prefab",
+   "idle": "Idle_melee_01",
+   "file": "demonskeleton_a_01.glb",
+   "icon": "icons/demonskeleton_a_01.jpg"
+  },
+  "demonskeleton_b": {
+   "name": "Soulless Demon",
+   "class": "Assassin",
+   "prefab": "hell_demonskeleton_purple_1_a_Prefab",
+   "idle": "Idle_melee_01",
+   "file": "demonskeleton_b.glb",
+   "icon": "icons/demonskeleton_b.jpg"
+  },
+  "demonskeleton_c": {
+   "name": "Soulless Demon",
+   "class": "Sentinel",
+   "prefab": "hell_demonskeleton_green_1_a_Prefab",
+   "idle": "Idle_melee_01",
+   "file": "demonskeleton_c.glb",
+   "icon": "icons/demonskeleton_c.jpg"
+  },
+  "hellraiser_gunner": {
+   "name": "Hellraiser",
+   "class": "Gunner",
+   "prefab": "Night_Hellraiser_Gunner_Prefab",
+   "idle": "Boss_Heavy_Idle_alt01_anm",
+   "file": "hellraiser_gunner.glb",
+   "icon": "icons/hellraiser_gunner.jpg"
+  },
+  "hellraiser_sentinel": {
+   "name": "Hellraiser",
+   "class": "Sentinel",
+   "prefab": "Night_Hellraiser_Sentinel_Prefab",
+   "idle": "Boss_Heavy_Idle_alt01_anm",
+   "file": "hellraiser_sentinel.glb",
+   "icon": "icons/hellraiser_sentinel.jpg"
+  },
+  "hellraiser_warrior": {
+   "name": "Hellraiser",
+   "class": "Warrior",
+   "prefab": "Night_Hellraiser_Warrior_Prefab",
+   "idle": "Boss_Heavy_Idle_alt01_anm",
+   "file": "hellraiser_warrior.glb",
+   "icon": "icons/hellraiser_warrior.jpg"
+  },
+  "roller_demon_assassin": {
+   "name": "Derby Demon",
+   "class": "Assassin",
+   "prefab": "Rollerdevil_C_Prefab",
+   "idle": "rollerdevilA_idle_C_anm",
+   "file": "roller_demon_assassin.glb",
+   "icon": "icons/roller_demon_assassin.jpg"
+  },
+  "roller_demon_magus": {
+   "name": "Derby Demon",
+   "class": "Magus",
+   "prefab": "Rollerdevil_D_Prefab",
+   "idle": "rollerdevilA_idle_D_anm",
+   "file": "roller_demon_magus.glb",
+   "icon": "icons/roller_demon_magus.jpg"
+  },
+  "roller_demon_sentinel": {
+   "name": "Derby Demon",
+   "class": "Sentinel",
+   "prefab": "RollerDevil_B_Prefab",
+   "idle": "rollerdevilA_idle_B_anm",
+   "file": "roller_demon_sentinel.glb",
+   "icon": "icons/roller_demon_sentinel.jpg"
+  },
+  "roller_demon_warrior": {
+   "name": "Derby Demon",
+   "class": "Warrior",
+   "prefab": "Rollerdevil_A_Prefab",
+   "idle": "rollerdevilA_idle_A_anm",
+   "file": "roller_demon_warrior.glb",
+   "icon": "icons/roller_demon_warrior.jpg"
+  },
+  "the_ferryman": {
+   "name": "The Ferryman",
+   "class": "Magus",
+   "prefab": "Ferryman_Prefab",
+   "idle": "ferryman_idle_anm",
+   "file": "the_ferryman.glb",
+   "icon": "icons/the_ferryman.jpg"
+  },
+  "winged_demon_a_fighter": {
+   "name": "Angel of Fear",
+   "class": "Warrior",
+   "prefab": "Angel_Of_Fear_Prefab",
+   "idle": "npc_wingedDemon_Idle_anm",
+   "file": "winged_demon_a_fighter.glb",
+   "icon": "icons/winged_demon_a_fighter.jpg"
+  },
+  "winged_demon_b_tank": {
+   "name": "Angel of Strife",
+   "class": "Sentinel",
+   "prefab": "Angel_Of_Strife_Prefab",
+   "idle": "npc_wingedDemon_Idle_anm",
+   "file": "winged_demon_b_tank.glb",
+   "icon": "icons/winged_demon_b_tank.jpg"
+  },
+  "wrathchild_assassin": {
+   "name": "Trickster",
+   "class": "Assassin",
+   "prefab": "Night_Trickster_Assassin_Prefab",
+   "idle": "ncity_tattoo_idle_anm",
+   "file": "wrathchild_assassin.glb",
+   "icon": "icons/wrathchild_assassin.jpg"
+  },
+  "wrathchild_mage": {
+   "name": "Trickster",
+   "class": "Magus",
+   "prefab": "Night_Trickster_Magus_Prefab",
+   "idle": "ncity_tattoo_idle_anm",
+   "file": "wrathchild_mage.glb",
+   "icon": "icons/wrathchild_mage.jpg"
+  },
+  "wrathchild_warrior": {
+   "name": "Trickster",
+   "class": "Warrior",
+   "prefab": "Night_Trickster_Warrior_Prefab",
+   "idle": "ncity_tattoo_idle_anm",
+   "file": "wrathchild_warrior.glb",
+   "icon": "icons/wrathchild_warrior.jpg"
+  }
+ }
+}
