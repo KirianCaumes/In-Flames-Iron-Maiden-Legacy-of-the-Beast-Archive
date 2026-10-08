@@ -51,7 +51,8 @@ const sun = new THREE.DirectionalLight(0xffffff, 1);          // only used for t
 sun.position.set(3, 8, 6); sun.castShadow = true; sun.shadow.mapSize.set(2048, 2048);
 Object.assign(sun.shadow.camera, { left: -10, right: 10, top: 10, bottom: -10, near: 0.5, far: 40 });
 scene.add(sun);
-const shadowMat = new THREE.ShadowMaterial({ opacity: 0.45 });
+// the disc only catches the characters' shadows: it must not write depth, or it hides the arena's smoke behind it
+const shadowMat = new THREE.ShadowMaterial({ opacity: 0.45, depthWrite: false });
 const ground = new THREE.Mesh(new THREE.CircleGeometry(11, 64), shadowMat);
 ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
@@ -389,7 +390,16 @@ $('battlecam').onchange = e => useBattleCamera(e.target.checked);
 // AB_TakeThisLife: cameraType 400 (cam_BUFF_01) while the "tap rapidly" interaction runs, then secondCamera 1000
 // (its custom rig) from the end of the interaction until the clip's OnMainCameraReturn event (tools/export_cameras.py).
 const ABILITY_CAMERA = { rapid_antic: 'interaction', rapid_tap: 'interaction', energy: 'ability' };
-function rigMatrix(cam, slot, t) {
+const DEG = Math.PI / 180;
+// a clip sampled at a.fps (pos, rot and optional scale arrays) at time t, clamped to its ends
+function sampleClip(a, t, p, q, s) {
+  const n = a.pos.length / 3, x = Math.min(Math.max(t, 0) * a.fps, n - 1), k = Math.floor(x), f = x - k, k1 = Math.min(k + 1, n - 1);
+  p.fromArray(a.pos, k * 3).lerp(new THREE.Vector3().fromArray(a.pos, k1 * 3), f);
+  q.fromArray(a.rot, k * 4).slerp(new THREE.Quaternion().fromArray(a.rot, k1 * 4), f);
+  if (s && a.scale) s.fromArray(a.scale, k * 3).lerp(new THREE.Vector3().fromArray(a.scale, k1 * 3), f);
+}
+// t: time in the ability clip; on: time since the camera was switched on
+function rigMatrix(cam, slot, t, on) {
   const root = cam.chain[0];
   const rot = cam.position === 'CasterStaticWithRotation' ? slot.rot : root.rot;   // SetStaticTarget
   const m = new THREE.Matrix4().compose(new THREE.Vector3(...slot.pos), new THREE.Quaternion(...rot), new THREE.Vector3(...root.scale));
@@ -397,25 +407,29 @@ function rigMatrix(cam, slot, t) {
   cam.chain.forEach((n, i) => {
     if (!i) return;
     const p = new THREE.Vector3(...n.pos), q = new THREE.Quaternion(...n.rot), s = new THREE.Vector3(...n.scale);
-    if (cam.anim && i === last) {                      // the rig's Animator, sampled at 30 fps
-      const a = cam.anim, x = Math.min(Math.max(t, 0) * a.fps, a.pos.length / 3 - 1), k = Math.floor(x), f = x - k;
-      const k1 = Math.min(k + 1, a.pos.length / 3 - 1);
-      p.fromArray(a.pos, k * 3).lerp(new THREE.Vector3().fromArray(a.pos, k1 * 3), f);
-      q.fromArray(a.rot, k * 4).slerp(new THREE.Quaternion().fromArray(a.rot, k1 * 4), f);
-      if (a.scale) s.fromArray(a.scale, k * 3).lerp(new THREE.Vector3().fromArray(a.scale, k1 * 3), f);
+    if (cam.anim && i === last) sampleClip(cam.anim, t, p, q, s);   // the rig's Animator, sampled at 30 fps
+    // RotateXYZBehaviour, reset to identity when the camera is switched on (TransformResetOnEnable)
+    if (n.rotate) q.multiply(new THREE.Quaternion().setFromEuler(new THREE.Euler(...n.rotate.map(d => d * DEG * on), 'YXZ')));
+    if (n.coast) {                                     // CameraCoast: additive layer, weight coastAmount, looped
+      const c = n.coast, cp = new THREE.Vector3(), cq = new THREE.Quaternion();
+      sampleClip(c, on % c.duration, cp, cq);
+      cp.sub(new THREE.Vector3().fromArray(c.pos, 0)); cq.premultiply(new THREE.Quaternion().fromArray(c.rot, 0).invert());
+      p.addScaledVector(cp, c.weight); q.multiply(new THREE.Quaternion().slerp(cq, c.weight));
     }
     m.multiply(new THREE.Matrix4().compose(p, q, s));
   });
   return m;
 }
-function updateAbilityCamera() {
+let camOn = 0;                                       // seconds since the ability camera was switched on
+function updateAbilityCamera(dt) {
   if (!battleCam || !arena.current) return;
   const spec = abilityCams.abilities.TakeThisLife, which = current && ABILITY_CAMERA[current.id], a = action();
   let cam = null;
   if (which && a && (which !== 'ability' || a.time < spec.returnAt)) cam = abilityCams.cameras[spec[which]];
   if (cam) {
     const caster = primary();
-    placeCamera(rigMatrix(cam, arenaData.slots.team1[slotOf(caster)], a.time), cam.fov);
+    camOn = cam === abilityCam ? camOn + dt : 0;     // the wind-up and the taps keep the same camera running
+    placeCamera(rigMatrix(cam, arenaData.slots.team1[slotOf(caster)], a.time, camOn), cam.fov);
     if (cam.show === 40) setSolo(caster);            // CameraDefinition.showVisualAgents 40: HideAllExceptCaster
   } else if (abilityCam) {                            // OnMainCameraReturn
     placeMainCamera(); setSolo(null);
@@ -453,7 +467,7 @@ renderer.setAnimationLoop(() => {
     $('scrub').value = Math.round(t / d * 1000);
     $('time').textContent = `${t.toFixed(2)} / ${d.toFixed(2)} s`;
   }
-  updateAbilityCamera();
+  updateAbilityCamera(dt);
   if (controls.enabled) controls.update();
   renderer.render(scene, camera);
 });

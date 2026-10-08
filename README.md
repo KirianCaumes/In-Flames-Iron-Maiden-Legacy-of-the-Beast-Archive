@@ -49,7 +49,7 @@ a preview in its cache for a while after a change.
 | Arenas, three time periods | scene data, baked vertex colours, `RHI/BlackcombEnv*` shaders, `BlackShaderManager` | exact data, ported shaders |
 | Sounds | `cso_jesterhead` character FX | game clips and volumes; mixer not reproduced |
 | Battle camera and slots | APK built-in `CamerasPrefab` and `SlotsContainer` | exact |
-| Take This Life cameras | `AB_TakeThisLife` cameras, `CameraManager`, the custom rig's clip | ported (camera flash effect not reproduced) |
+| Take This Life cameras | `AB_TakeThisLife` cameras, `CameraManager`, the custom rig's clip, the "tap rapidly" camera's spin and drift (`RotateXYZBehaviour`, `CameraCoast`) | ported (camera flash effect not reproduced) |
 | Watch chains | PhysX SpringJoint / HingeJoints | approximated with a Verlet rope |
 | Enemy line-ups | read from gameplay footage (line-ups were server-side), matched to the game data | idle animation and glow pulses |
 
@@ -73,7 +73,7 @@ The tools expect the game's asset bundles (`Android/data/com.roadhousegames.lotb
    python3 tools/export_arena.py site/assets/arena <ABMv6> <APK>/assets/bin/Data
    python3 tools/export_audio.py site/assets/audio <ABMv6>
    python3 tools/export_event.py site/assets/event <ABMv6>
-   python3 tools/export_cameras.py site/assets/cameras.json <ABMv6> <APK>/assets/bin/Data <AssetRipper export of 73d61df9…> <AssetRipper export of 08892f8d…>
+   python3 tools/export_cameras.py site/assets/cameras.json <ABMv6> <APK>/assets/bin/Data <AssetRipper export of 73d61df9…> <AssetRipper export of 08892f8d…> <AssetRipper export of <APK>/assets/bin/Data>
    ```
 3. Enemies: export with AssetRipper the bundles that hold their idle clips (`a1994610…`, `317b072b…`, `ff271c3b…`,
    `ca77f608…`, `07db5788…`, `6e64738d…`, `c9da9103…`, `48bac9bd…`), then

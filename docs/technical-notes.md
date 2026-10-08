@@ -154,6 +154,11 @@ Past / Present / Future (Present active by default), plus `BlackShaderManager`.
   `DungeonSlotsContainer` slots (Team1 `ForwardSlot`, `LeftSlot`, `RightSlot`; Team2 `Slot01`–`Slot06`). The camera clears
   to its background colour `(0.192, 0.302, 0.475)`; the scenes have no skybox.
 * `QuestBattles.csv`: battles 1–2 of each difficulty use `InFlames_road1`, 3–4 `hellgate_road2`, 5 (boss) `InFlames_roadEnd`.
+* **Smoke.** The purple haze around the arenas is a set of large transparent sheets per time period
+  (`FX_Smoke_Pillar01_geo`, `RHI/BlackcombEnvTransparentUVScroll`: texture × vertex colour, alpha blended, depth test
+  on, no depth write; the shader has no fog variant). They hang in front of the far walls and the river. The viewer's
+  disc that catches the characters' shadows does not write depth either, otherwise it hides the sheets behind it and
+  the walls and river show through.
 
 ## Particle systems
 
@@ -272,6 +277,22 @@ field layout of `dump.cs`. `tools/export_cameras.py` writes `site/assets/cameras
 of view, and the custom rig's clip sampled at 30 fps. The viewer plays them when the battle camera is on: Buff01 for the
 "rapid tap" entries, the custom camera for Take This Life until 3.30 s. The white flash particle attached to the custom
 camera (`VFX_CameraWhite_Solid`) is not reproduced.
+
+Buff01 also moves on its own while it is on. Its `cam_BUFF_01_spin` node has a `RotateXYZBehaviour` turning it by
+−5° per second around Y, so the camera circles the caster; `TransformResetOnEnable` (`0xC56D6C`) on the camera puts the
+spin back to identity each time the camera is switched on. `CameraCoast.OnEnable` (`0x1385E90`) takes the Animator of
+the camera's parent (`cam_BUFF_01_offset`, controller `enemy_cameraRotation`), gives its layer 1, `camera_coast`
+(additive), the weight `coastAmount` = 0.2 and plays it from the start: a 23.3 s loop drifting up to 0.3 m sideways and
+0.8° at that weight. The controller's base layer only moves the rig for enemy casters (`midCam_180rotation` when
+`caster_slotID` > 9). The viewer counts the time from the moment the camera comes on, so the wind-up and the taps share
+one spin.
+
+Checked against the gameplay recording (battle 2, Jesterhead on slot 2): same framing at the cut. The recording's
+battles run faster than the game's normal speed: the "x2" button is `GameplaySpeedPercent2` = 135 % in
+`GlobalVariables.csv` (the labels 1, 2, 3, 5 and 10 stand for 100, 135, 150, 500 and 1000 %). Jesterhead's poses during
+Take This Life advance 1.33 to 1.5 times faster than the clip and the camera returns 2.2 s after the cut, while the
+dialogue scenes run at normal speed (idle loops of 10.65 s, 7.30 s and 9.45 s for clips of 10.63 s, 7.30 s and
+9.40 s). The viewer's speed control at 1.35 gives the same pace.
 
 ## Not reproduced
 
